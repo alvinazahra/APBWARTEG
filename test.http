@@ -1,0 +1,14 @@
+### 1. Cek Daftar Menu (GET)
+GET http://127.0.0.1:8000/menus
+
+### 2. Cek Daftar Transaksi (GET)
+GET http://127.0.0.1:8000/transactions
+
+### 3. Beli Makanan / Transaksi Baru (POST)
+POST http://127.0.0.1:8000/transactions
+Content-Type: application/json
+
+{
+    "menu_id": 1,
+    "quantity": 2
+}
