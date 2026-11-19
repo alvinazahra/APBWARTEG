@@ -2,8 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Models\Menu;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class MenuController extends Controller
 {
@@ -12,15 +13,13 @@ class MenuController extends Controller
      */
     public function index()
     {
-        // Ambil semua data menu beserta relasi kategorinya dari database
         $menus = Menu::with('category')->get();
-        
-        // Kembalikan dalam format JSON biar gampang dicek lewat browser/API
+
         return response()->json([
             'success' => true,
             'message' => 'List Data Menu Warteg',
-            'data' => $menus
-        ]);
+            'data'    => $menus,
+        ], 200);
     }
 
     /**
@@ -28,7 +27,7 @@ class MenuController extends Controller
      */
     public function create()
     {
-        //
+        // Tidak dipakai karena endpoint mengembalikan JSON
     }
 
     /**
@@ -36,7 +35,27 @@ class MenuController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validated = $request->validate([
+            'category_id' => 'required|exists:categories,id',
+            'name'        => 'required|string|max:255',
+            'price'       => 'required|numeric|min:0',
+            'stock'       => 'required|integer|min:0',
+            'description' => 'nullable|string',
+            'image'       => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
+        ]);
+
+        if ($request->hasFile('image')) {
+            $validated['image'] = $request->file('image')->store('menus', 'public');
+        }
+
+        $menu = Menu::create($validated);
+        $menu->load('category');
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Menu berhasil ditambahkan',
+            'data'    => $menu,
+        ], 201);
     }
 
     /**
@@ -44,7 +63,20 @@ class MenuController extends Controller
      */
     public function show(string $id)
     {
-        //
+        $menu = Menu::with('category')->find($id);
+
+        if (!$menu) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Menu tidak ditemukan',
+            ], 404);
+        }
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Detail Data Menu',
+            'data'    => $menu,
+        ], 200);
     }
 
     /**
@@ -52,7 +84,7 @@ class MenuController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        // Tidak dipakai karena endpoint mengembalikan JSON
     }
 
     /**
@@ -60,7 +92,39 @@ class MenuController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $menu = Menu::find($id);
+
+        if (!$menu) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Menu tidak ditemukan',
+            ], 404);
+        }
+
+        $validated = $request->validate([
+            'category_id' => 'sometimes|required|exists:categories,id',
+            'name'        => 'sometimes|required|string|max:255',
+            'price'       => 'sometimes|required|numeric|min:0',
+            'stock'       => 'sometimes|required|integer|min:0',
+            'description' => 'nullable|string',
+            'image'       => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
+        ]);
+
+        if ($request->hasFile('image')) {
+            if ($menu->image && Storage::disk('public')->exists($menu->image)) {
+                Storage::disk('public')->delete($menu->image);
+            }
+            $validated['image'] = $request->file('image')->store('menus', 'public');
+        }
+
+        $menu->update($validated);
+        $menu->load('category');
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Menu berhasil diperbarui',
+            'data'    => $menu,
+        ], 200);
     }
 
     /**
@@ -68,6 +132,25 @@ class MenuController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $menu = Menu::find($id);
+
+        if (!$menu) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Menu tidak ditemukan',
+            ], 404);
+        }
+
+        if ($menu->image && Storage::disk('public')->exists($menu->image)) {
+            Storage::disk('public')->delete($menu->image);
+        }
+
+        $menu->delete();
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Menu berhasil dihapus',
+            'data'    => null,
+        ], 200);
     }
 }
