@@ -2,77 +2,88 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Models\Menu;
 use App\Models\Transaction;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 class TransactionController extends Controller
 {
-    // 1. Menampilkan daftar semua transaksi
+    // 1. Menampilkan daftar semua transaksi (khusus admin via route middleware)
     public function index()
     {
-        $transactions = Transaction::with('menu')->get();
-        
+        $transactions = Transaction::with('menu')->latest()->get();
+
         return response()->json([
             'success' => true,
             'message' => 'List Data Transaksi Warteg',
-            'data' => $transactions
+            'data' => $transactions,
         ]);
     }
 
     // 2. Memproses pembelian / transaksi baru
     public function store(Request $request)
     {
-        // Validasi data yang dikirim
-        $request->validate([
-            'menu_id' => 'required|exists:menus,id',
+        $validated = $request->validate([
+            'menu_id' => 'required|integer|exists:menus,id',
             'quantity' => 'required|integer|min:1',
         ]);
 
-        // Gunakan Database Transaction biar aman (kalau gagal, rollback otomatis)
-        DB::beginTransaction();
-
         try {
-            // Ambil data menu berdasarkan ID
-            $menu = Menu::findOrFail($request->menu_id);
+            $result = DB::transaction(function () use ($validated, $request) {
+                // Kunci baris menu agar stok tidak tabrakan saat request bersamaan
+                $menu = Menu::where('id', $validated['menu_id'])
+                    ->lockForUpdate()
+                    ->firstOrFail();
 
-            // Cek apakah stok mencukupi
-            if ($menu->stock < $request->quantity) {
+                if ($menu->stock < $validated['quantity']) {
+                    return [
+                        'error' => true,
+                        'status' => 422,
+                        'message' => 'Stok tidak cukup! Sisa stok menu ini tinggal: ' . $menu->stock,
+                    ];
+                }
+
+                $totalPrice = $menu->price * $validated['quantity'];
+
+                $menu->decrement('stock', $validated['quantity']);
+
+                $payload = [
+                    'menu_id' => $menu->id,
+                    'quantity' => $validated['quantity'],
+                    'total_price' => $totalPrice,
+                ];
+
+                if ($request->user()) {
+                    $payload['user_id'] = $request->user()->id;
+                }
+
+                $transaction = Transaction::create($payload);
+                $transaction->load('menu');
+
+                return [
+                    'error' => false,
+                    'transaction' => $transaction,
+                ];
+            });
+
+            if (!empty($result['error'])) {
                 return response()->json([
                     'success' => false,
-                    'message' => 'Stok tidak cukup! Sisa stok menu ini tinggal: ' . $menu->stock
-                ], 400);
+                    'message' => $result['message'],
+                ], $result['status']);
             }
-
-            // Hitung total harga (harga satuan x jumlah beli)
-            $totalPrice = $menu->price * $request->quantity;
-
-            // Kurangi stok menu secara otomatis
-            $menu->stock -= $request->quantity;
-            $menu->save();
-
-            // Simpan data transaksi ke database
-            $transaction = Transaction::create([
-                'menu_id' => $menu->id,
-                'quantity' => $request->quantity,
-                'total_price' => $totalPrice,
-            ]);
-
-            DB::commit();
 
             return response()->json([
                 'success' => true,
                 'message' => 'Transaksi Berhasil! Stok menu sudah dipotong.',
-                'data' => $transaction
+                'data' => $result['transaction'],
             ], 201);
-
-        } catch (\Exception $e) {
-            DB::rollBack();
+        } catch (\Throwable $e) {
             return response()->json([
                 'success' => false,
                 'message' => 'Terjadi kesalahan pada server',
-                'error' => $e->getMessage()
+                'error' => $e->getMessage(),
             ], 500);
         }
     }

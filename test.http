@@ -1,14 +1,115 @@
-### 1. Cek Daftar Menu (GET)
+### 1. Cek Daftar Menu (GET - Publik, Tanpa Login)
 GET http://127.0.0.1:8000/menus
+Accept: application/json
 
-### 2. Cek Daftar Transaksi (GET)
+### 2. Cek Daftar Transaksi Sebelum Login (Harusnya 401 Unauthorized)
 GET http://127.0.0.1:8000/transactions
+Accept: application/json
 
-### 3. Beli Makanan / Transaksi Baru (POST)
+### 3. Register Akun Customer
+POST http://127.0.0.1:8000/register
+Content-Type: application/json
+Accept: application/json
+
+{
+    "name": "Budi Pembeli",
+    "email": "budi2@warteg.com",
+    "password": "password123",
+    "role": "customer"
+}
+
+### 4. Cek Profil User yang Login (Harusnya muncul Budi dengan role customer)
+GET http://127.0.0.1:8000/me
+Accept: application/json
+
+### 5. Customer Beli Makanan / Transaksi Baru (Harusnya 201 Created)
 POST http://127.0.0.1:8000/transactions
 Content-Type: application/json
+Accept: application/json
 
 {
     "menu_id": 1,
     "quantity": 2
 }
+
+### 6. Customer Coba Akses Daftar Semua Transaksi (Harusnya 403 Forbidden!)
+GET http://127.0.0.1:8000/transactions
+Accept: application/json
+
+### 7. Logout Customer
+POST http://127.0.0.1:8000/logout
+Accept: application/json
+
+### 8. Register Akun Admin/Kasir
+POST http://127.0.0.1:8000/register
+Content-Type: application/json
+Accept: application/json
+
+{
+    "name": "Admin Warteg",
+    "email": "admin@warteg.com",
+    "password": "password123",
+    "role": "admin"
+}
+
+### 9. Admin Akses Daftar Semua Transaksi (Harusnya 200 OK!)
+GET http://127.0.0.1:8000/transactions
+Accept: application/json
+
+### 1. Cek Daftar Menu (GET - Publik, Tanpa Login)
+GET http://127.0.0.1:8000/menus
+Accept: application/json
+
+### 2. Cek Daftar Transaksi Sebelum Login (Harusnya 401 Unauthorized)
+GET http://127.0.0.1:8000/transactions
+Accept: application/json
+
+### 3. Register Akun Customer
+POST http://127.0.0.1:8000/register
+Content-Type: application/json
+Accept: application/json
+
+{
+    "name": "Budi Pembeli",
+    "email": "budi@warteg.com",
+    "password": "password123",
+    "role": "customer"
+}
+
+### 4. Cek Profil User yang Login (Harusnya muncul Budi dengan role customer)
+GET http://127.0.0.1:8000/me
+Accept: application/json
+
+### 5. Customer Beli Makanan / Transaksi Baru (Harusnya 201 Created)
+POST http://127.0.0.1:8000/transactions
+Content-Type: application/json
+Accept: application/json
+
+{
+    "menu_id": 1,
+    "quantity": 2
+}
+
+### 6. Customer Coba Akses Daftar Semua Transaksi (Harusnya 403 Forbidden!)
+GET http://127.0.0.1:8000/transactions
+Accept: application/json
+
+### 7. Logout Customer
+POST http://127.0.0.1:8000/logout
+Accept: application/json
+
+### 8. Register Akun Admin/Kasir
+POST http://127.0.0.1:8000/register
+Content-Type: application/json
+Accept: application/json
+
+{
+    "name": "Admin Warteg",
+    "email": "admin@warteg.com",
+    "password": "password123",
+    "role": "admin"
+}
+
+### 9. Admin Akses Daftar Semua Transaksi (Harusnya 200 OK!)
+GET http://127.0.0.1:8000/transactions
+Accept: application/json

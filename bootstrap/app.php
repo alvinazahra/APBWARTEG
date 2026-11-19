@@ -12,9 +12,14 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware): void {
-        // Mengecualikan rute transaksi dari pengecekan CSRF Token
+        // Mengecualikan semua rute dari pengecekan CSRF Token untuk testing API
         $middleware->validateCsrfTokens(except: [
-            'transactions',
+            '*',
+        ]);
+
+        // Mendaftarkan alias middleware role
+        $middleware->alias([
+            'role' => \App\Http\Middleware\CheckRole::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {
