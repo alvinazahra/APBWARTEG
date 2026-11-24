@@ -10,6 +10,10 @@ Route::get('/warteg', function () {
     return view('warteg');
 });
 
+Route::get('/admin/login', function () {
+    return view('admin.login');
+});
+
 // 1. Rute Publik (Bisa diakses siapa saja tanpa login)
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
