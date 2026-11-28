@@ -331,7 +331,20 @@
             border: 1px solid #d4c5aa; font-size: 10.5px; font-weight: 700; padding: 2px 8px; border-radius: 999px;
         }
 
-        .idea-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 14px; margin-top: 12px; }
+        .nasi-bar {
+            background: var(--cream-hover);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 12px 14px;
+            margin-bottom: 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .idea-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(275px, 1fr)); gap: 14px; margin-top: 12px; }
         .idea-card {
             background: #fff;
             border: 1px solid var(--border);
@@ -345,7 +358,17 @@
         .idea-card.drink { border-top-color: var(--orange); }
         .idea-head { display: flex; justify-content: space-between; align-items: flex-start; gap: 8px; }
         .idea-bahan { font-size: 15px; font-weight: 800; color: var(--green-dark); }
-        .idea-chips { display: flex; flex-wrap: wrap; gap: 6px; }
+
+        .dish-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 6px;
+            background: var(--cream-hover);
+            border: 1px solid #e6dac3;
+            border-radius: 9px;
+            padding: 6px 8px;
+        }
         .dish-chip {
             background: var(--orange-soft);
             color: var(--orange-hover);
@@ -354,12 +377,23 @@
             font-weight: 700;
             padding: 4px 10px;
             border-radius: 999px;
+            text-align: left;
+            flex: 1;
         }
         .dish-chip.drink-chip {
             background: #eaf3ee;
             color: var(--green-dark);
             border-color: #b7d2c3;
         }
+        .nasi-mini-btn {
+            background: var(--green-dark);
+            color: #fffdf9;
+            font-size: 11px;
+            padding: 4px 8px;
+            border-radius: 7px;
+            white-space: nowrap;
+        }
+        .nasi-mini-btn:hover { background: var(--green-deep); }
 
         .struk { background: #fff; border: 1.5px dashed var(--green-dark); border-radius: 11px; padding: 16px; margin-top: 12px; }
         .struk-line { display: flex; justify-content: space-between; font-size: 13px; padding: 7px 0; border-bottom: 1px solid #eee5d4; }
@@ -416,11 +450,11 @@
                 <div class="side-label">Menu Navigasi</div>
                 <nav class="side-nav">
                     <button type="button" class="side-btn active" id="sideBtn-bahan" onclick="switchSection('bahan')">
-                        <span>Stok Bahan Permenu</span>
+                        <span>Stok Bahan</span>
                         <span>›</span>
                     </button>
                     <button type="button" class="side-btn" id="sideBtn-olahan" onclick="switchSection('olahan')">
-                        <span>Ide Olahan Otomatis</span>
+                        <span>Ide Olahan</span>
                         <span>›</span>
                     </button>
                     <button type="button" class="side-btn" id="sideBtn-transaksi" onclick="switchSection('transaksi')">
@@ -448,17 +482,17 @@
         <header class="word-ribbon no-print">
             <div class="ribbon-groups">
                 <div class="ribbon-group">
-                    <span class="ribbon-group-title">Halaman Aktif:</span>
-                    <span class="badge-orange" id="ribbonActiveTitle">Stok Bahan Permenu</span>
+                    <span class="ribbon-group-title">Halaman:</span>
+                    <span class="badge-orange" id="ribbonActiveTitle">Stok Bahan</span>
                 </div>
                 <div class="ribbon-group">
-                    <span class="ribbon-group-title">Aksi Cepat:</span>
+                    <span class="ribbon-group-title">Aksi:</span>
                     <button type="button" class="btn-soft btn-sm" onclick="loadMenus()">Refresh Menu</button>
-                    <button type="button" class="btn-soft btn-sm" onclick="switchSection('olahan')">Cek Ide Olahan</button>
+                    <button type="button" class="btn-soft btn-sm" onclick="switchSection('olahan')">Ide Olahan</button>
                     <button type="button" class="btn-soft btn-sm" onclick="refreshTransactionsView()">Refresh Transaksi</button>
                 </div>
             </div>
-            <div class="sub" id="ribbonHint">Kelola stok makanan & minuman per menu</div>
+            <div class="sub" id="ribbonHint">Stok bahan</div>
         </header>
 
         <main class="content-wrap">
@@ -466,17 +500,17 @@
             <section class="card section-box active no-print" id="sec-bahan">
                 <div class="sec-head">
                     <div>
-                        <h2 class="sec-title">Stok Bahan Masakan & Minuman Permenu</h2>
-                        <div class="sub">Pilih kategori (Makanan / Minuman) dan menu lalu atur stok bahannya.</div>
+                        <h2 class="sec-title">Stok Bahan</h2>
+                        <div class="sub">Makanan & minuman per menu.</div>
                     </div>
                     <span class="badge-orange">STOK BAHAN</span>
                 </div>
 
                 <div class="grid-2-kpi" style="margin-bottom:16px;">
                     <div class="kpi-box">
-                        <div class="kpi-label">Item Bahan Tercatat</div>
+                        <div class="kpi-label">Item Bahan</div>
                         <div class="kpi-val" id="kpiBahanTotal">0</div>
-                        <div class="kpi-sub">Makanan & minuman</div>
+                        <div class="kpi-sub">Tercatat</div>
                     </div>
                     <div class="kpi-box accent-orange">
                         <div class="kpi-label">Bahan Menipis</div>
@@ -489,7 +523,7 @@
                     <div class="form-panel">
                         <div style="display:flex; justify-content:space-between; align-items:center;">
                             <h3 style="font-size:15px; color:var(--green-dark);" id="bahanFormTitle">Tambah / Edit Bahan</h3>
-                            <span id="editingBadge" style="display:none; font-size:11px; font-weight:700; color:var(--orange);">MODE EDIT</span>
+                            <span id="editingBadge" style="display:none; font-size:11px; font-weight:700; color:var(--orange);">EDIT</span>
                         </div>
 
                         <div class="form-row-2">
@@ -502,7 +536,7 @@
                             </div>
                             <div>
                                 <div style="display:flex; justify-content:space-between; align-items:center; margin-top:10px; margin-bottom:5px;">
-                                    <label style="margin:0;">Target Menu</label>
+                                    <label style="margin:0;">Menu</label>
                                     <button type="button" class="btn-soft btn-sm" style="padding:2px 6px; font-size:10px;" onclick="loadMenus()">Ambil</button>
                                 </div>
                                 <select id="bahanMenuSelect" onchange="renderIngredients()" style="margin-top:0;">
@@ -512,7 +546,7 @@
                         </div>
 
                         <label>Nama Bahan</label>
-                        <input type="text" id="bahanNama" placeholder="Contoh: Telur, Tempe, Ayam, Teh, Es Batu">
+                        <input type="text" id="bahanNama" placeholder="Telur, Tempe, Ayam, Teh">
 
                         <div class="form-row-2">
                             <div>
@@ -545,14 +579,14 @@
                         </div>
 
                         <div class="sub" id="estimasiPorsiText" style="margin-top:8px; font-weight:600; color:var(--green-dark);">
-                            Estimasi hasil: ±5 porsi
+                            ±5 porsi
                         </div>
 
-                        <label>Catatan Masak / Takaran</label>
-                        <input type="text" id="bahanCatatan" placeholder="Contoh: Bisa didadar, diceplok, atau dibalado">
+                        <label>Catatan</label>
+                        <input type="text" id="bahanCatatan" placeholder="Opsional">
 
                         <div class="row">
-                            <button type="button" class="btn-green" id="saveBahanBtn" onclick="saveIngredientStock()">Simpan Bahan</button>
+                            <button type="button" class="btn-green" id="saveBahanBtn" onclick="saveIngredientStock()">Simpan</button>
                             <button type="button" class="btn-soft" onclick="resetIngredientForm()">Bersihkan</button>
                             <button type="button" class="btn-orange" onclick="seedSampleIngredients()">Isi Contoh</button>
                         </div>
@@ -565,7 +599,7 @@
                             <div class="toolbar">
                                 <input type="text" id="searchBahanInput" oninput="renderIngredients()" placeholder="Cari bahan...">
                                 <select id="filterKategoriBahan" onchange="renderIngredients()">
-                                    <option value="ALL">Semua Kategori</option>
+                                    <option value="ALL">Semua Jenis</option>
                                     <option value="Makanan">Makanan</option>
                                     <option value="Minuman">Minuman</option>
                                 </select>
@@ -579,7 +613,7 @@
                             <table>
                                 <thead>
                                     <tr>
-                                        <th>Kategori & Menu</th>
+                                        <th>Jenis & Menu</th>
                                         <th>Bahan</th>
                                         <th>Stok</th>
                                         <th>Status</th>
@@ -593,53 +627,55 @@
                 </div>
             </section>
 
-            <!-- 2. IDE OLAHAN OTOMATIS DARI STOK BAHAN -->
+            <!-- 2. IDE OLAHAN OTOMATIS -->
             <section class="card section-box no-print" id="sec-olahan">
                 <div class="sec-head">
                     <div>
-                        <h2 class="sec-title">Ide Olahan Otomatis dari Stok Bahan</h2>
-                        <div class="sub">Otomatis mendeteksi bahan yang tersedia di stok (misalnya Telur, Tempe, Ayam, Teh) lalu menampilkan kemungkinan olahannya.</div>
+                        <h2 class="sec-title">Ide Olahan</h2>
+                        <div class="sub">Lauk bebas tentukan harga; Nasi terpisah (+Rp5.000) dan bisa dipakai untuk olahan apa saja.</div>
                     </div>
                     <span class="badge-orange">AUTO OLAHAN</span>
                 </div>
 
-                <div class="grid-2" style="margin-bottom:16px;">
-                    <div class="form-panel">
-                        <h3 style="font-size:14px; color:var(--green-dark);">Tambah / Sesuaikan Aturan Olahan Bahan</h3>
-                        <div class="sub">Misalnya: kata kunci <b>tempe</b> → <i>Tempe Orek, Tempe Bacem, Tempe Mendoan</i>.</div>
-
-                        <label>Kata Kunci Bahan (di nama stok)</label>
-                        <input type="text" id="ruleKeyword" placeholder="Contoh: telur / tempe / tahu / ayam / teh">
-
-                        <label>Jenis</label>
-                        <select id="ruleCategory">
-                            <option value="Makanan">Makanan</option>
-                            <option value="Minuman">Minuman</option>
-                        </select>
-
-                        <label>Daftar Olahan / Masakan (pisahkan dengan koma)</label>
-                        <input type="text" id="ruleDishes" placeholder="Contoh: Tempe Orek, Tempe Bacem, Tempe Mendoan">
-
-                        <div class="row">
-                            <button type="button" class="btn-green" onclick="saveRecipeRule()">Simpan Aturan Olahan</button>
-                            <button type="button" class="btn-soft" onclick="resetRecipeRulesToDefault()">Reset Default</button>
-                        </div>
-                        <div id="ruleMsg" class="alert"></div>
+                <div class="nasi-bar">
+                    <div>
+                        <strong style="color:var(--green-dark); font-size:13.5px;">Item Terpisah: Nasi Putih (Rp5.000)</strong>
+                        <div class="sub" style="font-size:12px;">Bisa dijadikan menu terpisah atau dipasangkan (+Rp5.000) ke lauk mana pun.</div>
                     </div>
-
-                    <div class="form-panel">
-                        <h3 style="font-size:14px; color:var(--green-dark);">Cara Kerja Deteksi Otomatis</h3>
-                        <div class="sub" style="margin-top:6px;">
-                            Setiap kali kamu menambah atau mengubah stok bahan di menu <b>Stok Bahan Permenu</b>, halaman ini langsung mencocokkan nama bahannya dengan kamus olahan warteg.
-                        </div>
-                        <div class="row" style="margin-top:12px;">
-                            <button type="button" class="btn-orange" onclick="seedSampleIngredients(); renderRecipeSuggestions();">Isi Contoh Stok (Telur, Tempe, Teh)</button>
-                            <button type="button" class="btn-soft" onclick="switchSection('bahan')">Ke Stok Bahan</button>
-                        </div>
-                    </div>
+                    <button type="button" class="btn-green btn-sm" onclick="addStandaloneRiceMenu()">+ Masukkan Nasi Putih (Rp5.000)</button>
                 </div>
 
-                <h3 style="font-size:15px; color:var(--green-dark);">Hasil Deteksi Olahan dari Stok Saat Ini</h3>
+                <div class="form-panel" style="margin-bottom:16px;">
+                    <h3 style="font-size:14px; color:var(--green-dark);">Aturan Olahan</h3>
+
+                    <div class="form-row-2">
+                        <div>
+                            <label>Kata Kunci Bahan</label>
+                            <input type="text" id="ruleKeyword" placeholder="telur / tempe / ayam / teh">
+                        </div>
+                        <div>
+                            <label>Jenis</label>
+                            <select id="ruleCategory">
+                                <option value="Makanan">Makanan</option>
+                                <option value="Minuman">Minuman</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <label>Daftar Olahan (pisahkan dengan koma)</label>
+                    <input type="text" id="ruleDishes" placeholder="Semur Telur, Telur Dadar, Telur Balado">
+
+                    <div class="row">
+                        <button type="button" class="btn-green" onclick="saveRecipeRule()">Simpan</button>
+                        <button type="button" class="btn-soft" onclick="resetRecipeRulesToDefault()">Reset</button>
+                        <button type="button" class="btn-orange" onclick="seedSampleIngredients(); renderRecipeSuggestions();">Isi Contoh Stok</button>
+                        <button type="button" class="btn-soft" onclick="switchSection('bahan')">Ke Stok Bahan</button>
+                    </div>
+                    <div id="ruleMsg" class="alert"></div>
+                </div>
+
+                <h3 style="font-size:15px; color:var(--green-dark);">Hasil Olahan</h3>
+                <div class="sub" style="font-size:12px; margin-top:2px;">Klik nama olahan untuk buat menu lauk saja (harga bebas), atau klik <strong>+ Nasi</strong> untuk lauk + nasi (+Rp5.000).</div>
                 <div id="recipeSuggestionsGrid" class="idea-grid"></div>
             </section>
 
@@ -648,21 +684,21 @@
                 <div class="sec-head">
                     <div>
                         <h2 class="sec-title">Transaksi Pelanggan</h2>
-                        <div class="sub">Pantau transaksi masuk dan buka bukti transaksi untuk dicetak.</div>
+                        <div class="sub">Riwayat & struk.</div>
                     </div>
                     <span class="badge-orange">TRANSAKSI</span>
                 </div>
 
                 <div class="grid-4" style="margin-bottom:16px;">
                     <div class="kpi-box">
-                        <div class="kpi-label">Jumlah Transaksi</div>
+                        <div class="kpi-label">Transaksi</div>
                         <div class="kpi-val" id="kpiTrxCount">0</div>
-                        <div class="kpi-sub">Pesanan tercatat</div>
+                        <div class="kpi-sub">Tercatat</div>
                     </div>
                     <div class="kpi-box accent-orange">
-                        <div class="kpi-label">Total Pendapatan</div>
+                        <div class="kpi-label">Pendapatan</div>
                         <div class="kpi-val" id="kpiOmzet">Rp0</div>
-                        <div class="kpi-sub">Akumulasi transaksi</div>
+                        <div class="kpi-sub">Total</div>
                     </div>
                 </div>
 
@@ -688,7 +724,7 @@
                             </tr>
                         </thead>
                         <tbody id="trxHistoryBody">
-                            <tr><td colspan="7" class="sub">Belum ada transaksi pelanggan.</td></tr>
+                            <tr><td colspan="7" class="sub">Belum ada transaksi.</td></tr>
                         </tbody>
                     </table>
                 </div>
@@ -698,22 +734,22 @@
             <section class="card section-box no-print" id="sec-gambar">
                 <div class="sec-head">
                     <div>
-                        <h2 class="sec-title">Kelola Gambar Menu</h2>
-                        <div class="sub">Klik kartu menu atau pilih dari dropdown untuk mengganti foto menu.</div>
+                        <h2 class="sec-title">Gambar Menu</h2>
+                        <div class="sub">Foto menu & kelola daftar menu.</div>
                     </div>
                     <span class="badge-orange">GAMBAR MENU</span>
                 </div>
 
                 <div class="grid-2">
                     <div>
-                        <label>Target Menu</label>
-                        <select id="adminMenuSelect" onchange="syncAdminPreview()"></select>
+                        <label>Menu</label>
+                        <select id="adminMenuSelect" onchange="syncAdminPreview(); renderAdminMenusGrid();"></select>
 
                         <div class="preview-box">
-                            <img id="adminPreviewImg" class="preview-img" src="" alt="Preview">
+                            <img id="adminPreviewImg" class="preview-img" src="" alt="Preview" onerror="this.src='https://placehold.co/300x180/ede3cf/153b2c?text=No+Image'">
                             <div>
-                                <div id="adminPreviewLabel" style="font-size:12px; font-weight:700; color:var(--green-dark);">Preview Gambar</div>
-                                <div id="adminPreviewSub" class="sub" style="font-size:11px; margin-top:2px;">Menampilkan gambar saat ini atau file baru.</div>
+                                <div id="adminPreviewLabel" style="font-size:12px; font-weight:700; color:var(--green-dark);">Preview</div>
+                                <div id="adminPreviewSub" class="sub" style="font-size:11px; margin-top:2px;">-</div>
                             </div>
                         </div>
                     </div>
@@ -721,807 +757,825 @@
                     <div>
                         <label>File Gambar</label>
                         <div class="dropzone" id="adminDropzone" onclick="document.getElementById('adminImageInput').click()">
-                            <input type="file" id="adminImageInput" accept="image/jpeg,image/png,image/webp" onchange="handleAdminFileChange()">
-                            <div class="dropzone-title">Klik untuk pilih foto atau drag & drop ke sini</div>
-                            <div class="dropzone-sub">Format: JPG, JPEG, PNG, WEBP • Maksimal 2MB</div>
+                            <input type="file" id="adminImageInput" accept="image/png,image/jpeg,image/webp" onchange="handleAdminImageChange(event)">
+                            <div class="dropzone-title">Klik atau seret gambar ke sini</div>
+                            <div class="dropzone-sub">JPG, JPEG, PNG, WEBP (maks. 2MB)</div>
                             <div class="file-meta" id="adminFileMeta">Belum ada file dipilih</div>
                         </div>
 
                         <div class="row">
-                            <button type="button" class="btn-orange" onclick="uploadMenuImage()">Simpan & Upload Gambar</button>
-                            <button type="button" class="btn-soft" onclick="clearAdminFile()">Reset File</button>
+                            <button type="button" class="btn-orange" onclick="uploadMenuImage()">Simpan Gambar</button>
+                            <button type="button" class="btn-soft" onclick="resetAdminImageForm()">Reset</button>
+                            <button type="button" class="btn-soft" onclick="deleteMenu()">Hapus Menu</button>
                         </div>
+                        <div id="gambarMsg" class="alert"></div>
                     </div>
                 </div>
-                <div id="adminMsg" class="alert"></div>
 
-                <div style="margin-top:20px; padding-top:14px; border-top:1px solid var(--border);">
-                    <h3 style="font-size:14px; color:var(--green-dark);">Daftar Menu (Klik untuk Pilih)</h3>
-                    <div id="menuList" class="menus">
-                        <div class="sub">Memuat menu...</div>
-                    </div>
+                <div style="margin-top:18px;">
+                    <h3 style="font-size:15px; color:var(--green-dark);">Daftar Menu</h3>
+                    <div class="menus" id="adminMenusGrid"></div>
                 </div>
             </section>
 
-            <!-- Bukti Transaksi -->
-            <section class="card" id="receiptCard" style="display:none;">
-                <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px;">
-                    <h3 style="font-size:15px; color:var(--green-dark);">Bukti Transaksi Pelanggan</h3>
-                    <div class="row" style="margin-top:0;">
-                        <button class="btn-green no-print" onclick="window.print()">Cetak / Print</button>
-                        <button class="btn-soft no-print" onclick="document.getElementById('receiptCard').style.display='none'">Tutup</button>
+            <!-- STRUK CETAK -->
+            <section class="card" id="sec-struk" style="display:none;">
+                <div class="sec-head">
+                    <div>
+                        <h2 class="sec-title">Struk Transaksi</h2>
+                        <div class="sub">Bukti pembayaran pelanggan</div>
                     </div>
+                    <button type="button" class="btn-green no-print" onclick="window.print()">Cetak</button>
                 </div>
-                <div id="receiptBox" class="struk"></div>
+                <div class="struk" id="strukContent"></div>
             </section>
         </main>
     </div>
 </div>
 
 <script>
-const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
-const STORAGE_INGREDIENTS_KEY = 'apb_warteg_ingredients_per_menu_v2';
-const STORAGE_RULES_KEY = 'apb_warteg_recipe_rules_v1';
-const STORAGE_TRX_KEY = 'apb_warteg_transactions_v1';
+    const CSRF_TOKEN = document.querySelector('meta[name="csrf-token"]')?.content || '';
+    const STORAGE_BAHAN_KEY = 'apb_warteg_bahan_v1';
+    const STORAGE_RULE_KEY = 'apb_warteg_rules_v1';
+    const HARGA_NASI = 5000;
 
-const DEFAULT_RECIPE_RULES = [
-    { keyword: 'telur', category: 'Makanan', dishes: ['Telur Dadar', 'Telur Ceplok / Mata Sapi', 'Telur Balado', 'Semur Telur'] },
-    { keyword: 'tempe', category: 'Makanan', dishes: ['Tempe Orek', 'Tempe Bacem', 'Tempe Mendoan', 'Tempe Goreng Tepung'] },
-    { keyword: 'tahu', category: 'Makanan', dishes: ['Tahu Goreng', 'Tahu Bacem', 'Tahu Balado', 'Perkedel Tahu'] },
-    { keyword: 'ayam', category: 'Makanan', dishes: ['Ayam Goreng', 'Ayam Geprek', 'Ayam Kecap', 'Semur Ayam'] },
-    { keyword: 'ikan', category: 'Makanan', dishes: ['Ikan Goreng', 'Ikan Balado', 'Pindang Ikan'] },
-    { keyword: 'sayur', category: 'Makanan', dishes: ['Sayur Lodeh', 'Tumis Sayur', 'Capcay Warteg'] },
-    { keyword: 'teh', category: 'Minuman', dishes: ['Es Teh Manis', 'Teh Hangat Tawar', 'Teh Lemon'] },
-    { keyword: 'kopi', category: 'Minuman', dishes: ['Kopi Hitam Panas', 'Es Kopi Susu', 'Kopi Tubruk'] },
-    { keyword: 'jeruk', category: 'Minuman', dishes: ['Es Jeruk Peras', 'Jeruk Hangat'] }
-];
+    const DEFAULT_RULES = [
+        { keyword: 'telur', category: 'Makanan', dishes: ['Semur Telur', 'Telur Dadar', 'Telur Balado'] },
+        { keyword: 'tempe', category: 'Makanan', dishes: ['Tempe Orek', 'Tempe Bacem', 'Tempe Mendoan'] },
+        { keyword: 'ayam', category: 'Makanan', dishes: ['Ayam Goreng', 'Ayam Kecap', 'Opor Ayam'] },
+        { keyword: 'teh', category: 'Minuman', dishes: ['Es Teh Manis', 'Teh Hangat Tawar'] }
+    ];
 
-const SECTION_META = {
-    bahan: { title: 'Stok Bahan Permenu', hint: 'Kelola stok makanan & minuman per menu' },
-    olahan: { title: 'Ide Olahan Otomatis', hint: 'Deteksi kemungkinan masakan/minuman dari stok' },
-    transaksi: { title: 'Transaksi Pelanggan', hint: 'Cek riwayat & cetak bukti transaksi' },
-    gambar: { title: 'Gambar Menu', hint: 'Unggah & perbarui foto menu' }
-};
+    let menusCache = [];
+    let categoriesCache = [];
+    let transactionsCache = [];
+    let selectedAdminFile = null;
+    let editingIngredientId = null;
 
-let menusCache = [];
-let ingredientsCache = [];
-let recipeRulesCache = [];
-let transactionsCache = [];
-let tempPreviewUrl = null;
-let editingIngredientId = null;
-let alertTimers = {};
-
-const fmtRp = (num) => 'Rp' + Number(num || 0).toLocaleString('id-ID');
-
-function escapeHtml(str) {
-    return String(str ?? '')
-        .replace(/&/g, '&amp;')
-        .replace(/</g, '&lt;')
-        .replace(/>/g, '&gt;')
-        .replace(/"/g, '&quot;');
-}
-
-function getMenuDisplayName(menu) {
-    return menu?.name ?? menu?.nama_menu ?? (`Menu #${menu?.id ?? ''}`);
-}
-
-function hideAllAlerts() {
-    Object.keys(alertTimers).forEach((key) => {
-        clearTimeout(alertTimers[key]);
-        delete alertTimers[key];
-    });
-    document.querySelectorAll('.alert').forEach((el) => {
-        el.className = 'alert';
-        el.textContent = '';
-    });
-}
-
-function showAlert(elId, type, text, duration = 3500) {
-    const el = document.getElementById(elId);
-    if (!el) return;
-
-    if (alertTimers[elId]) {
-        clearTimeout(alertTimers[elId]);
-    }
-
-    el.className = 'alert ' + (type === 'ok' ? 'ok' : 'err');
-    el.textContent = text;
-
-    if (duration > 0) {
-        alertTimers[elId] = setTimeout(() => {
-            el.className = 'alert';
-            el.textContent = '';
-            delete alertTimers[elId];
-        }, duration);
-    }
-}
-
-function switchSection(sectionName) {
-    hideAllAlerts();
-    ['bahan', 'olahan', 'transaksi', 'gambar'].forEach(name => {
-        document.getElementById(`sideBtn-${name}`)?.classList.toggle('active', name === sectionName);
-        document.getElementById(`sec-${name}`)?.classList.toggle('active', name === sectionName);
-    });
-    const meta = SECTION_META[sectionName] || SECTION_META.bahan;
-    document.getElementById('ribbonActiveTitle').textContent = meta.title;
-    document.getElementById('ribbonHint').textContent = meta.hint;
-    if (sectionName === 'olahan') renderRecipeSuggestions();
-    if (sectionName === 'transaksi') refreshTransactionsView();
-}
-
-async function checkMe() {
-    try {
-        const res = await fetch('/me', { headers: { 'Accept': 'application/json' } });
-        if (res.status === 401) {
-            window.location.replace('/admin/login');
-            return false;
-        }
-        const data = await res.json();
-        const user = data?.data?.user ?? data?.user;
-        if (!res.ok || !user || user.role !== 'admin') {
-            window.location.replace('/admin/login');
-            return false;
-        }
-        document.getElementById('userStatus').textContent = user.name;
-        document.getElementById('mainShell').style.display = 'grid';
-        return true;
-    } catch {
-        window.location.replace('/admin/login');
-        return false;
-    }
-}
-
-async function logoutUser() {
-    try {
-        await fetch('/logout', {
-            method: 'POST',
-            headers: { 'Accept': 'application/json', 'X-CSRF-TOKEN': csrfToken }
-        });
-    } finally {
-        window.location.replace('/admin/login');
-    }
-}
-
-function updateEstimatedPortions() {
-    const stock = Number(document.getElementById('bahanJumlah')?.value || 0);
-    const perPortion = Number(document.getElementById('bahanTakaran')?.value || 0);
-    const el = document.getElementById('estimasiPorsiText');
-    if (!el) return;
-
-    if (perPortion > 0) {
-        const est = Math.floor(stock / perPortion);
-        el.textContent = `Estimasi hasil: ±${est} porsi (dari ${stock} stok ÷ ${perPortion}/porsi)`;
-    } else {
-        el.textContent = `Estimasi hasil: isi takaran per porsi untuk hitung otomatis`;
-    }
-}
-
-function loadLocalIngredients() {
-    try {
-        const raw = localStorage.getItem(STORAGE_INGREDIENTS_KEY);
-        ingredientsCache = raw ? JSON.parse(raw) : [];
-    } catch {
-        ingredientsCache = [];
-    }
-    renderIngredients();
-    renderRecipeSuggestions();
-}
-
-function saveLocalIngredients() {
-    localStorage.setItem(STORAGE_INGREDIENTS_KEY, JSON.stringify(ingredientsCache));
-    renderIngredients();
-    renderRecipeSuggestions();
-}
-
-function loadRecipeRules() {
-    try {
-        const raw = localStorage.getItem(STORAGE_RULES_KEY);
-        recipeRulesCache = raw ? JSON.parse(raw) : [...DEFAULT_RECIPE_RULES];
-    } catch {
-        recipeRulesCache = [...DEFAULT_RECIPE_RULES];
-    }
-    renderRecipeSuggestions();
-}
-
-function saveRecipeRule() {
-    const keyword = (document.getElementById('ruleKeyword')?.value || '').trim().toLowerCase();
-    const category = document.getElementById('ruleCategory')?.value || 'Makanan';
-    const rawDishes = (document.getElementById('ruleDishes')?.value || '').trim();
-
-    if (!keyword) return showAlert('ruleMsg', 'err', 'Kata kunci bahan wajib diisi.');
-    const dishes = rawDishes.split(',').map(s => s.trim()).filter(Boolean);
-    if (!dishes.length) return showAlert('ruleMsg', 'err', 'Masukkan minimal 1 nama olahan.');
-
-    const idx = recipeRulesCache.findIndex(r => r.keyword.toLowerCase() === keyword);
-    if (idx >= 0) {
-        recipeRulesCache[idx] = { keyword, category, dishes };
-        showAlert('ruleMsg', 'ok', `Aturan olahan untuk "${keyword}" diperbarui.`);
-    } else {
-        recipeRulesCache.push({ keyword, category, dishes });
-        showAlert('ruleMsg', 'ok', `Aturan olahan untuk "${keyword}" ditambahkan.`);
-    }
-
-    localStorage.setItem(STORAGE_RULES_KEY, JSON.stringify(recipeRulesCache));
-    document.getElementById('ruleKeyword').value = '';
-    document.getElementById('ruleDishes').value = '';
-    renderRecipeSuggestions();
-}
-
-function resetRecipeRulesToDefault() {
-    recipeRulesCache = [...DEFAULT_RECIPE_RULES];
-    localStorage.setItem(STORAGE_RULES_KEY, JSON.stringify(recipeRulesCache));
-    showAlert('ruleMsg', 'ok', 'Aturan olahan dikembalikan ke bawaan warteg.');
-    renderRecipeSuggestions();
-}
-
-function getSuggestedDishesForIngredient(item) {
-    const nameLower = String(item.name || '').toLowerCase();
-    const matched = [];
-    recipeRulesCache.forEach(rule => {
-        if (nameLower.includes(rule.keyword.toLowerCase())) {
-            rule.dishes.forEach(d => {
-                if (!matched.includes(d)) matched.push(d);
-            });
-        }
-    });
-    if (!matched.length) {
-        return item.category === 'Minuman'
-            ? [`${item.name} Dingin`, `${item.name} Hangat`]
-            : [`Tumis ${item.name}`, `${item.name} Spesial Warteg`];
-    }
-    return matched;
-}
-
-function renderRecipeSuggestions() {
-    const grid = document.getElementById('recipeSuggestionsGrid');
-    if (!grid) return;
-
-    if (!ingredientsCache.length) {
-        grid.innerHTML = '<div class="sub">Belum ada stok bahan. Tambahkan bahan seperti <b>Telur</b>, <b>Tempe</b>, atau <b>Teh</b> di menu Stok Bahan Permenu agar rekomendasi olahan muncul otomatis.</div>';
-        return;
-    }
-
-    grid.innerHTML = ingredientsCache.map(item => {
-        const dishes = getSuggestedDishesForIngredient(item);
-        const perPortion = Number(item.per_portion || 0);
-        const estText = perPortion > 0 ? ` • ±${Math.floor(Number(item.stock) / perPortion)} porsi` : '';
-        const isDrink = item.category === 'Minuman';
-
-        return `
-            <div class="idea-card ${isDrink ? 'drink' : ''}">
-                <div class="idea-head">
-                    <div>
-                        <span class="cat-pill">${escapeHtml(item.category || 'Makanan')}</span>
-                        <div class="idea-bahan" style="margin-top:6px;">${escapeHtml(item.name)}</div>
-                        <div class="sub" style="font-size:12px;">Stok: <b>${item.stock}</b> ${escapeHtml(item.unit)}${estText}</div>
-                    </div>
-                    <span class="menu-pill">${escapeHtml(item.menu_label)}</span>
-                </div>
-                <div class="sub" style="font-size:11.5px; font-weight:700; color:var(--green-dark);">Bisa dibuat menjadi:</div>
-                <div class="idea-chips">
-                    ${dishes.map(d => `<span class="dish-chip ${isDrink ? 'drink-chip' : ''}">${escapeHtml(d)}</span>`).join('')}
-                </div>
-            </div>
-        `;
-    }).join('');
-}
-
-function loadLocalTransactions() {
-    try {
-        const raw = localStorage.getItem(STORAGE_TRX_KEY);
-        transactionsCache = raw ? JSON.parse(raw) : [];
-    } catch {
-        transactionsCache = [];
-    }
-    renderTransactionsHistory();
-}
-
-function updateKpiStats() {
-    const lowCount = ingredientsCache.filter(item => Number(item.stock) <= Number(item.min_stock ?? 2)).length;
-    const totalOmzet = transactionsCache.reduce((sum, t) => sum + Number(t.total_price || 0), 0);
-
-    document.getElementById('kpiBahanTotal').textContent = ingredientsCache.length;
-    document.getElementById('kpiBahanLow').textContent = lowCount;
-    document.getElementById('kpiTrxCount').textContent = transactionsCache.length;
-    document.getElementById('kpiOmzet').textContent = fmtRp(totalOmzet);
-}
-
-function resetIngredientForm() {
-    editingIngredientId = null;
-    document.getElementById('bahanKategori').value = 'Makanan';
-    document.getElementById('bahanNama').value = '';
-    document.getElementById('bahanJumlah').value = '5';
-    document.getElementById('bahanTakaran').value = '1';
-    document.getElementById('bahanMinStok').value = '2';
-    document.getElementById('bahanCatatan').value = '';
-    document.getElementById('bahanFormTitle').textContent = 'Tambah / Edit Bahan';
-    document.getElementById('saveBahanBtn').textContent = 'Simpan Bahan';
-    document.getElementById('editingBadge').style.display = 'none';
-    updateEstimatedPortions();
-}
-
-function editIngredient(id) {
-    const item = ingredientsCache.find(row => String(row.id) === String(id));
-    if (!item) return;
-
-    editingIngredientId = item.id;
-    document.getElementById('bahanKategori').value = item.category || 'Makanan';
-    const menuSelect = document.getElementById('bahanMenuSelect');
-    if (menuSelect && [...menuSelect.options].some(o => String(o.value) === String(item.menu_key))) {
-        menuSelect.value = String(item.menu_key);
-    }
-    document.getElementById('bahanNama').value = item.name;
-    document.getElementById('bahanJumlah').value = item.stock;
-    document.getElementById('bahanSatuan').value = item.unit || 'butir';
-    document.getElementById('bahanTakaran').value = item.per_portion ?? 1;
-    document.getElementById('bahanMinStok').value = item.min_stock ?? 2;
-    document.getElementById('bahanCatatan').value = item.note && item.note !== '-' ? item.note : '';
-
-    document.getElementById('bahanFormTitle').textContent = `Edit Bahan: ${item.name}`;
-    document.getElementById('saveBahanBtn').textContent = 'Perbarui Bahan';
-    document.getElementById('editingBadge').style.display = 'inline';
-    updateEstimatedPortions();
-    switchSection('bahan');
-}
-
-function saveIngredientStock() {
-    const category = document.getElementById('bahanKategori').value || 'Makanan';
-    const menuSelect = document.getElementById('bahanMenuSelect');
-    const nameInput = document.getElementById('bahanNama');
-    const qtyInput = document.getElementById('bahanJumlah');
-    const unitSelect = document.getElementById('bahanSatuan');
-    const portionInput = document.getElementById('bahanTakaran');
-    const minInput = document.getElementById('bahanMinStok');
-    const noteInput = document.getElementById('bahanCatatan');
-
-    const menuKey = menuSelect.value || 'umum';
-    const menuLabel = menuSelect.options[menuSelect.selectedIndex]?.text || 'Umum / Semua Menu';
-    const name = nameInput.value.trim();
-    const stock = Number(qtyInput.value);
-    const unit = unitSelect.value;
-    const perPortion = Number(portionInput.value || 0);
-    const minStock = Number(minInput.value || 2);
-    const note = noteInput.value.trim() || '-';
-
-    if (!name) return showAlert('bahanMsg', 'err', 'Nama bahan wajib diisi.');
-    if (Number.isNaN(stock) || stock < 0) return showAlert('bahanMsg', 'err', 'Jumlah stok tidak boleh negatif.');
-
-    const payload = {
-        category,
-        menu_key: menuKey,
-        menu_label: menuLabel,
-        name,
-        stock,
-        unit,
-        per_portion: perPortion,
-        min_stock: minStock,
-        note
+    const SECTION_META = {
+        bahan: { title: 'Stok Bahan', hint: 'Stok bahan' },
+        olahan: { title: 'Ide Olahan Otomatis', hint: 'Lauk bebas harga • Nasi terpisah +Rp5.000' },
+        transaksi: { title: 'Transaksi Pelanggan', hint: 'Riwayat & struk' },
+        gambar: { title: 'Gambar Menu', hint: 'Foto menu & hapus menu' }
     };
 
-    if (editingIngredientId !== null) {
-        const idx = ingredientsCache.findIndex(item => String(item.id) === String(editingIngredientId));
-        if (idx >= 0) {
-            ingredientsCache[idx] = { ...ingredientsCache[idx], ...payload };
-            showAlert('bahanMsg', 'ok', `Bahan "${name}" diperbarui.`);
-        }
-        resetIngredientForm();
-        saveLocalIngredients();
-        return;
-    }
-
-    const existingIdx = ingredientsCache.findIndex(
-        item => String(item.menu_key) === String(menuKey) && item.name.toLowerCase() === name.toLowerCase()
-    );
-
-    if (existingIdx >= 0) {
-        ingredientsCache[existingIdx] = { ...ingredientsCache[existingIdx], ...payload };
-        showAlert('bahanMsg', 'ok', `Bahan "${name}" untuk ${menuLabel} diperbarui.`);
-    } else {
-        ingredientsCache.unshift({ id: Date.now(), ...payload });
-        showAlert('bahanMsg', 'ok', `Bahan "${name}" (${category}) ditambahkan.`);
-    }
-
-    saveLocalIngredients();
-    nameInput.value = '';
-    noteInput.value = '';
-    updateEstimatedPortions();
-}
-
-function seedSampleIngredients() {
-    if (ingredientsCache.length) {
-        showAlert('bahanMsg', 'err', 'Daftar bahan sudah terisi.');
-        return;
-    }
-    const firstMenu = menusCache[0];
-    const mKey = firstMenu ? String(firstMenu.id) : 'umum';
-    const mLabel = firstMenu ? getMenuDisplayName(firstMenu) : 'Umum / Semua Menu';
-
-    ingredientsCache = [
-        { id: 1, category: 'Makanan', menu_key: mKey, menu_label: mLabel, name: 'Telur Ayam', stock: 24, unit: 'butir', per_portion: 1, min_stock: 8, note: 'Bisa dadar, ceplok, atau balado' },
-        { id: 2, category: 'Makanan', menu_key: mKey, menu_label: mLabel, name: 'Tempe', stock: 8, unit: 'papan', per_portion: 0.5, min_stock: 3, note: 'Cocok untuk orek, bacem, atau mendoan' },
-        { id: 3, category: 'Minuman', menu_key: 'umum', menu_label: 'Umum / Semua Menu', name: 'Teh Celup & Gula', stock: 30, unit: 'porsi', per_portion: 1, min_stock: 10, note: 'Es teh manis atau teh hangat' }
-    ];
-    saveLocalIngredients();
-    showAlert('bahanMsg', 'ok', 'Contoh bahan (Telur, Tempe, Teh) dimuat. Cek tab Ide Olahan Otomatis!');
-}
-
-function adjustIngredientStock(id, delta) {
-    const idx = ingredientsCache.findIndex(item => String(item.id) === String(id));
-    if (idx < 0) return;
-    ingredientsCache[idx].stock = Math.max(0, Number((Number(ingredientsCache[idx].stock) + delta).toFixed(2)));
-    saveLocalIngredients();
-}
-
-function deleteIngredient(id) {
-    if (String(editingIngredientId) === String(id)) resetIngredientForm();
-    ingredientsCache = ingredientsCache.filter(item => String(item.id) !== String(id));
-    saveLocalIngredients();
-}
-
-function renderIngredients() {
-    const tbody = document.getElementById('ingredientTableBody');
-    const catFilter = document.getElementById('filterKategoriBahan')?.value || 'ALL';
-    const menuFilter = document.getElementById('filterMenuBahan')?.value || 'ALL';
-    const keyword = (document.getElementById('searchBahanInput')?.value || '').trim().toLowerCase();
-    if (!tbody) return;
-
-    const filtered = ingredientsCache.filter(item => {
-        const matchCat = catFilter === 'ALL' || (item.category || 'Makanan') === catFilter;
-        const matchMenu = menuFilter === 'ALL' || String(item.menu_key) === String(menuFilter);
-        const matchText = !keyword
-            || String(item.name).toLowerCase().includes(keyword)
-            || String(item.menu_label).toLowerCase().includes(keyword)
-            || String(item.category || '').toLowerCase().includes(keyword)
-            || String(item.note || '').toLowerCase().includes(keyword);
-        return matchCat && matchMenu && matchText;
+    document.addEventListener('DOMContentLoaded', async () => {
+        initDropzone();
+        updateEstimatedPortions();
+        await checkAuthAndInit();
     });
 
-    if (!filtered.length) {
-        tbody.innerHTML = '<tr><td colspan="5" class="sub">Belum ada bahan yang cocok.</td></tr>';
-        updateKpiStats();
-        return;
+    async function checkAuthAndInit() {
+        try {
+            const res = await fetch('/me', { headers: { 'Accept': 'application/json' } });
+            if (!res.ok) {
+                window.location.href = '/admin/login';
+                return;
+            }
+            const data = await res.json();
+            const user = data.user || data.data || data;
+            if (user?.role && user.role !== 'admin') {
+                window.location.href = '/warteg';
+                return;
+            }
+            document.getElementById('userStatus').textContent = user?.name || 'Admin Warteg';
+            document.getElementById('mainShell').style.display = 'grid';
+
+            await loadCategories();
+            await loadMenus();
+            renderIngredients();
+            renderRecipeSuggestions();
+            await refreshTransactionsView();
+        } catch (e) {
+            document.getElementById('mainShell').style.display = 'grid';
+            renderIngredients();
+            renderRecipeSuggestions();
+        }
     }
 
-    tbody.innerHTML = filtered.map(item => {
-        const isLow = Number(item.stock) <= Number(item.min_stock ?? 2);
-        const badge = isLow ? '<span class="badge-low">Menipis</span>' : '<span class="badge-safe">Aman</span>';
-        const perPortion = Number(item.per_portion || 0);
-        const estInfo = perPortion > 0 ? `±${Math.floor(Number(item.stock) / perPortion)} porsi` : '';
+    function switchSection(sec) {
+        document.querySelectorAll('.section-box').forEach(el => el.classList.remove('active'));
+        document.querySelectorAll('.side-btn').forEach(btn => btn.classList.remove('active'));
 
-        return `
-            <tr>
-                <td>
-                    <span class="cat-pill">${escapeHtml(item.category || 'Makanan')}</span>
-                    <div style="margin-top:4px;"><span class="menu-pill">${escapeHtml(item.menu_label)}</span></div>
-                </td>
-                <td>
-                    <div><b>${escapeHtml(item.name)}</b></div>
-                    <div class="sub" style="font-size:11px;">${escapeHtml(item.note || '-')}</div>
-                </td>
-                <td><b>${item.stock}</b> ${escapeHtml(item.unit)}<div class="sub" style="font-size:11px;">${estInfo}</div></td>
-                <td>${badge}</td>
-                <td>
-                    <div style="display:flex; gap:4px; flex-wrap:wrap;">
-                        <button type="button" class="btn-soft btn-sm" onclick="adjustIngredientStock(${item.id}, -1)">-1</button>
-                        <button type="button" class="btn-green btn-sm" onclick="adjustIngredientStock(${item.id}, 1)">+1</button>
-                        <button type="button" class="btn-soft btn-sm" onclick="editIngredient(${item.id})">Edit</button>
-                        <button type="button" class="btn-soft btn-sm" onclick="deleteIngredient(${item.id})">Hapus</button>
-                    </div>
-                </td>
-            </tr>
-        `;
-    }).join('');
+        const target = document.getElementById(`sec-${sec}`);
+        const btn = document.getElementById(`sideBtn-${sec}`);
+        if (target) target.classList.add('active');
+        if (btn) btn.classList.add('active');
 
-    updateKpiStats();
-}
+        const meta = SECTION_META[sec] || { title: 'Admin', hint: '' };
+        document.getElementById('ribbonActiveTitle').textContent = meta.title;
+        document.getElementById('ribbonHint').textContent = meta.hint;
 
-async function refreshTransactionsView() {
-    try {
-        const res = await fetch('/transactions', { headers: { 'Accept': 'application/json' } });
-        if (res.status === 401) {
-            window.location.replace('/admin/login');
-            return;
+        if (sec === 'olahan') renderRecipeSuggestions();
+        if (sec === 'gambar') {
+            renderAdminMenusGrid();
+            syncAdminPreview();
         }
-        if (res.ok) {
+        if (sec === 'transaksi') refreshTransactionsView();
+    }
+
+    async function loadCategories() {
+        try {
+            const res = await fetch('/categories', { headers: { 'Accept': 'application/json' } });
+            if (res.ok) {
+                const json = await res.json();
+                categoriesCache = Array.isArray(json) ? json : (json.data || []);
+            }
+        } catch (_) {
+            categoriesCache = [];
+        }
+    }
+
+    function resolveCategoryId(categoryName) {
+        if (!categoriesCache.length) return 1;
+        const found = categoriesCache.find(c =>
+            String(c.name || '').toLowerCase().includes(String(categoryName || '').toLowerCase())
+        );
+        return found ? found.id : categoriesCache[0].id;
+    }
+
+    async function loadMenus() {
+        try {
+            const res = await fetch('/menus', { headers: { 'Accept': 'application/json' } });
             const json = await res.json();
-            const list = Array.isArray(json.data) ? json.data : (Array.isArray(json) ? json : null);
-            if (list) {
-                transactionsCache = list;
-                localStorage.setItem(STORAGE_TRX_KEY, JSON.stringify(transactionsCache.slice(0, 100)));
+            menusCache = Array.isArray(json) ? json : (json.data || json.menus || []);
+            populateMenuSelects();
+            renderAdminMenusGrid();
+            syncAdminPreview();
+        } catch (err) {
+            showAlert('gambarMsg', 'Gagal memuat daftar menu.', 'err');
+        }
+    }
+
+    function populateMenuSelects() {
+        const adminSelect = document.getElementById('adminMenuSelect');
+        const bahanSelect = document.getElementById('bahanMenuSelect');
+        const filterSelect = document.getElementById('filterMenuBahan');
+
+        const prevAdmin = adminSelect?.value;
+        const prevBahan = bahanSelect?.value;
+        const prevFilter = filterSelect?.value;
+
+        if (adminSelect) {
+            adminSelect.innerHTML = menusCache.length
+                ? menusCache.map(m => `<option value="${m.id}">${m.name} (Stok: ${m.stock ?? 0})</option>`).join('')
+                : `<option value="">Belum ada menu</option>`;
+            if (prevAdmin && menusCache.some(m => String(m.id) === String(prevAdmin))) {
+                adminSelect.value = prevAdmin;
             }
         }
-    } catch {}
-    renderTransactionsHistory();
-}
 
-function renderTransactionsHistory() {
-    const tbody = document.getElementById('trxHistoryBody');
-    const keyword = (document.getElementById('searchTrxInput')?.value || '').trim().toLowerCase();
-    if (!tbody) return;
+        if (bahanSelect) {
+            bahanSelect.innerHTML = `<option value="umum">Umum / Semua Menu</option>` +
+                menusCache.map(m => `<option value="${m.name}">${m.name}</option>`).join('');
+            if (prevBahan) bahanSelect.value = prevBahan;
+        }
 
-    const filtered = transactionsCache.filter(trx => {
-        if (!keyword) return true;
-        const menu = trx.menu || {};
-        const menuName = String(menu.name ?? menu.nama_menu ?? '').toLowerCase();
-        const customerName = String(trx.user?.name ?? trx.customer_name ?? 'Pelanggan').toLowerCase();
-        const idStr = String(trx.id ?? '').toLowerCase();
-        return menuName.includes(keyword) || customerName.includes(keyword) || idStr.includes(keyword);
-    });
-
-    if (!filtered.length) {
-        tbody.innerHTML = '<tr><td colspan="7" class="sub">Belum ada transaksi pelanggan.</td></tr>';
-        updateKpiStats();
-        return;
+        if (filterSelect) {
+            filterSelect.innerHTML = `<option value="ALL">Semua Menu</option><option value="umum">Umum</option>` +
+                menusCache.map(m => `<option value="${m.name}">${m.name}</option>`).join('');
+            if (prevFilter) filterSelect.value = prevFilter;
+        }
     }
 
-    tbody.innerHTML = filtered.map((trx, idx) => {
-        const menu = trx.menu || {};
-        const menuName = menu.name ?? menu.nama_menu ?? ('Menu #' + (trx.menu_id ?? '-'));
-        const customerName = trx.user?.name ?? trx.customer_name ?? 'Pelanggan';
-        const waktu = trx.created_at ? new Date(trx.created_at).toLocaleString('id-ID') : '-';
-
-        return `
-            <tr>
-                <td>#${trx.id ?? (idx + 1)}</td>
-                <td><b>${escapeHtml(customerName)}</b></td>
-                <td>${waktu}</td>
-                <td>${escapeHtml(menuName)}</td>
-                <td>${trx.quantity ?? 1}x</td>
-                <td><b>${fmtRp(trx.total_price)}</b></td>
-                <td><button type="button" class="btn-orange btn-sm" onclick="viewReceiptFromHistory(${idx})">Lihat Struk</button></td>
-            </tr>
-        `;
-    }).join('');
-
-    updateKpiStats();
-}
-
-function viewReceiptFromHistory(index) {
-    const trx = transactionsCache[index];
-    if (!trx) return;
-    const menu = trx.menu || {};
-    const menuName = menu.name ?? menu.nama_menu ?? ('Menu #' + trx.menu_id);
-    const unitPrice = menu.price ?? menu.harga ?? (trx.quantity ? Math.round(trx.total_price / trx.quantity) : 0);
-    const waktu = trx.created_at ? new Date(trx.created_at).toLocaleString('id-ID') : new Date().toLocaleString('id-ID');
-    const customerName = trx.user?.name ?? trx.customer_name ?? 'Pelanggan';
-
-    document.getElementById('receiptBox').innerHTML = `
-        <div style="text-align:center; margin-bottom:12px;">
-            <div style="font-weight:800; font-size:16px; color:var(--green-dark);">BUKTI TRANSAKSI APB WARTEG</div>
-            <div class="sub">ID Transaksi: #${trx.id ?? (index + 1)}</div>
-        </div>
-        <div class="struk-line"><span>Pelanggan</span><span><b>${escapeHtml(customerName)}</b></span></div>
-        <div class="struk-line"><span>Waktu</span><span>${waktu}</span></div>
-        <div class="struk-line"><span>Menu</span><span>${escapeHtml(menuName)}</span></div>
-        <div class="struk-line"><span>Harga Satuan</span><span>${fmtRp(unitPrice)}</span></div>
-        <div class="struk-line"><span>Jumlah</span><span>${trx.quantity ?? 1}x</span></div>
-        <div class="struk-total"><span>TOTAL BAYAR</span><span>${fmtRp(trx.total_price)}</span></div>
-    `;
-
-    const card = document.getElementById('receiptCard');
-    card.style.display = 'block';
-    card.scrollIntoView({ behavior: 'smooth' });
-}
-
-function getMenuImage(menu) {
-    if (menu.image_url) return menu.image_url;
-    if (menu.image) {
-        const base = menu.image.startsWith('http') ? menu.image : `/storage/${menu.image}`;
-        return `${base}?v=${Date.now()}`;
+    function getIngredients() {
+        try {
+            return JSON.parse(localStorage.getItem(STORAGE_BAHAN_KEY) || '[]');
+        } catch (_) {
+            return [];
+        }
     }
 
-    const label = getMenuDisplayName(menu).slice(0, 18);
-    const svg = `
-        <svg xmlns="http://www.w3.org/2000/svg" width="400" height="220" viewBox="0 0 400 220">
-            <defs>
-                <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
-                    <stop offset="0%" stop-color="#153b2c"/>
-                    <stop offset="100%" stop-color="#235641"/>
-                </linearGradient>
-            </defs>
-            <rect width="400" height="220" fill="url(#bg)"/>
-            <circle cx="340" cy="36" r="60" fill="#e86a17" fill-opacity="0.3"/>
-            <rect x="24" y="156" width="84" height="24" rx="6" fill="#e86a17"/>
-            <text x="66" y="172" text-anchor="middle" fill="#ffffff" font-family="Arial, sans-serif" font-size="11" font-weight="bold">WARTEG</text>
-            <text x="24" y="112" fill="#fffdf9" font-family="Arial, sans-serif" font-size="22" font-weight="bold">${escapeHtml(label)}</text>
-        </svg>
-    `.trim();
-
-    return 'data:image/svg+xml;charset=UTF-8,' + encodeURIComponent(svg);
-}
-
-function formatErrorMessage(res, data, fallback) {
-    if (data?.errors) {
-        const firstKey = Object.keys(data.errors)[0];
-        if (firstKey && data.errors[firstKey]?.[0]) return data.errors[firstKey][0];
-    }
-    return data?.message || fallback;
-}
-
-async function loadMenus() {
-    try {
-        const res = await fetch('/menus', { headers: { 'Accept': 'application/json' } });
-        const json = await res.json();
-        menusCache = json.data || [];
-    } catch {
-        menusCache = [];
+    function setIngredients(list) {
+        localStorage.setItem(STORAGE_BAHAN_KEY, JSON.stringify(list));
     }
 
-    const listEl = document.getElementById('menuList');
-    const bahanMenuSelect = document.getElementById('bahanMenuSelect');
-    const filterMenuBahan = document.getElementById('filterMenuBahan');
-    const adminSelectEl = document.getElementById('adminMenuSelect');
-
-    const prevBahanMenu = bahanMenuSelect?.value;
-    const prevFilterMenu = filterMenuBahan?.value;
-    const prevAdminVal = adminSelectEl?.value;
-
-    if (bahanMenuSelect) bahanMenuSelect.innerHTML = '<option value="umum">Umum / Semua Menu</option>';
-    if (filterMenuBahan) filterMenuBahan.innerHTML = '<option value="ALL">Semua Menu</option><option value="umum">Umum / Semua Menu</option>';
-    if (adminSelectEl) adminSelectEl.innerHTML = '';
-
-    if (!menusCache.length) {
-        listEl.innerHTML = '<div class="sub">Data menu kosong.</div>';
-        syncAdminPreview();
-        return;
+    function updateEstimatedPortions() {
+        const qty = parseFloat(document.getElementById('bahanJumlah').value) || 0;
+        const perPortion = parseFloat(document.getElementById('bahanTakaran').value) || 0;
+        const est = perPortion > 0 ? Math.floor(qty / perPortion) : 0;
+        document.getElementById('estimasiPorsiText').textContent = `±${est} porsi`;
     }
 
-    listEl.innerHTML = menusCache.map(m => {
-        const nama = getMenuDisplayName(m);
-        const harga = m.price ?? m.harga ?? 0;
-        const ingCount = ingredientsCache.filter(i => String(i.menu_key) === String(m.id)).length;
-        return `
-            <div class="menu-item" id="card-${m.id}" onclick="selectMenu(${m.id})">
-                <img class="menu-thumb" src="${getMenuImage(m)}" alt="${escapeHtml(nama)}">
-                <div class="menu-body">
-                    <div>
-                        <span class="menu-tag">${ingCount} bahan</span>
-                        <div style="font-weight:700; color:var(--green-dark); margin-top:6px;">${escapeHtml(nama)}</div>
-                        <div class="stock">Stok porsi: ${m.stock ?? 0}</div>
+    function saveIngredientStock() {
+        const name = document.getElementById('bahanNama').value.trim();
+        const category = document.getElementById('bahanKategori').value;
+        const menuName = document.getElementById('bahanMenuSelect').value;
+        const qty = parseFloat(document.getElementById('bahanJumlah').value);
+        const unit = document.getElementById('bahanSatuan').value;
+        const perPortion = parseFloat(document.getElementById('bahanTakaran').value) || 1;
+        const minStock = parseFloat(document.getElementById('bahanMinStok').value) || 0;
+        const note = document.getElementById('bahanCatatan').value.trim();
+
+        if (!name || isNaN(qty) || qty < 0) {
+            return showAlert('bahanMsg', 'Nama bahan dan jumlah stok wajib diisi.', 'err');
+        }
+
+        const list = getIngredients();
+        if (editingIngredientId) {
+            const idx = list.findIndex(item => item.id === editingIngredientId);
+            if (idx !== -1) {
+                list[idx] = { ...list[idx], name, category, menuName, qty, unit, perPortion, minStock, note };
+            }
+        } else {
+            list.unshift({
+                id: 'bhn_' + Date.now(),
+                name, category, menuName, qty, unit, perPortion, minStock, note
+            });
+        }
+
+        setIngredients(list);
+        resetIngredientForm();
+        renderIngredients();
+        renderRecipeSuggestions();
+        showAlert('bahanMsg', 'Stok bahan tersimpan.', 'ok');
+    }
+
+    function editIngredient(id) {
+        const item = getIngredients().find(i => i.id === id);
+        if (!item) return;
+        editingIngredientId = item.id;
+        document.getElementById('bahanFormTitle').textContent = 'Edit Bahan';
+        document.getElementById('editingBadge').style.display = 'inline';
+        document.getElementById('bahanKategori').value = item.category || 'Makanan';
+        document.getElementById('bahanMenuSelect').value = item.menuName || 'umum';
+        document.getElementById('bahanNama').value = item.name;
+        document.getElementById('bahanJumlah').value = item.qty;
+        document.getElementById('bahanSatuan').value = item.unit || 'porsi';
+        document.getElementById('bahanTakaran').value = item.perPortion || 1;
+        document.getElementById('bahanMinStok').value = item.minStock ?? 2;
+        document.getElementById('bahanCatatan').value = item.note || '';
+        updateEstimatedPortions();
+    }
+
+    function adjustIngredientQty(id, delta) {
+        const list = getIngredients();
+        const item = list.find(i => i.id === id);
+        if (!item) return;
+        item.qty = Math.max(0, Number(((parseFloat(item.qty) || 0) + delta).toFixed(2)));
+        setIngredients(list);
+        renderIngredients();
+        renderRecipeSuggestions();
+    }
+
+    function deleteIngredient(id) {
+        const list = getIngredients().filter(i => i.id !== id);
+        setIngredients(list);
+        if (editingIngredientId === id) resetIngredientForm();
+        renderIngredients();
+        renderRecipeSuggestions();
+    }
+
+    function resetIngredientForm() {
+        editingIngredientId = null;
+        document.getElementById('bahanFormTitle').textContent = 'Tambah / Edit Bahan';
+        document.getElementById('editingBadge').style.display = 'none';
+        document.getElementById('bahanNama').value = '';
+        document.getElementById('bahanJumlah').value = 5;
+        document.getElementById('bahanTakaran').value = 1;
+        document.getElementById('bahanMinStok').value = 2;
+        document.getElementById('bahanCatatan').value = '';
+        updateEstimatedPortions();
+    }
+
+    function seedSampleIngredients() {
+        const samples = [
+            { id: 'bhn_telur', name: 'Telur Ayam', category: 'Makanan', menuName: 'umum', qty: 24, unit: 'butir', perPortion: 1, minStock: 6, note: 'Segar' },
+            { id: 'bhn_tempe', name: 'Tempe Papan', category: 'Makanan', menuName: 'umum', qty: 8, unit: 'papan', perPortion: 0.5, minStock: 3, note: '' },
+            { id: 'bhn_ayam', name: 'Ayam Potong', category: 'Makanan', menuName: 'umum', qty: 10, unit: 'porsi', perPortion: 1, minStock: 3, note: '' },
+            { id: 'bhn_teh', name: 'Teh Celup & Gula', category: 'Minuman', menuName: 'umum', qty: 30, unit: 'porsi', perPortion: 1, minStock: 8, note: '' }
+        ];
+        setIngredients(samples);
+        renderIngredients();
+        renderRecipeSuggestions();
+        showAlert('bahanMsg', 'Contoh stok bahan dimuat.', 'ok');
+    }
+
+    function renderIngredients() {
+        const all = getIngredients();
+        const q = (document.getElementById('searchBahanInput')?.value || '').toLowerCase().trim();
+        const kat = document.getElementById('filterKategoriBahan')?.value || 'ALL';
+        const menuFilter = document.getElementById('filterMenuBahan')?.value || 'ALL';
+
+        const lowCount = all.filter(i => Number(i.qty) <= Number(i.minStock ?? 0)).length;
+        document.getElementById('kpiBahanTotal').textContent = all.length;
+        document.getElementById('kpiBahanLow').textContent = lowCount;
+
+        const filtered = all.filter(item => {
+            const matchQ = !q || String(item.name).toLowerCase().includes(q) || String(item.note || '').toLowerCase().includes(q);
+            const matchKat = kat === 'ALL' || item.category === kat;
+            const matchMenu = menuFilter === 'ALL' || item.menuName === menuFilter;
+            return matchQ && matchKat && matchMenu;
+        });
+
+        const tbody = document.getElementById('ingredientTableBody');
+        if (!filtered.length) {
+            tbody.innerHTML = `<tr><td colspan="5" class="sub">Belum ada data bahan.</td></tr>`;
+            return;
+        }
+
+        tbody.innerHTML = filtered.map(item => {
+            const isLow = Number(item.qty) <= Number(item.minStock ?? 0);
+            const est = item.perPortion > 0 ? Math.floor(Number(item.qty) / Number(item.perPortion)) : 0;
+            return `
+                <tr>
+                    <td>
+                        <span class="cat-pill">${item.category}</span><br>
+                        <span class="menu-pill" style="margin-top:4px;">${item.menuName === 'umum' ? 'Umum' : item.menuName}</span>
+                    </td>
+                    <td>
+                        <strong>${item.name}</strong>
+                        ${item.note ? `<div class="sub" style="font-size:11px;">${item.note}</div>` : ''}
+                    </td>
+                    <td>
+                        <strong>${item.qty} ${item.unit}</strong>
+                        <div class="sub" style="font-size:11px;">±${est} porsi</div>
+                    </td>
+                    <td>
+                        <span class="${isLow ? 'badge-low' : 'badge-safe'}">${isLow ? 'Menipis' : 'Aman'}</span>
+                    </td>
+                    <td>
+                        <div style="display:flex; gap:4px; flex-wrap:wrap;">
+                            <button type="button" class="btn-soft btn-sm" onclick="adjustIngredientQty('${item.id}', 1)">+1</button>
+                            <button type="button" class="btn-soft btn-sm" onclick="adjustIngredientQty('${item.id}', -1)">-1</button>
+                            <button type="button" class="btn-soft btn-sm" onclick="editIngredient('${item.id}')">Edit</button>
+                            <button type="button" class="btn-soft btn-sm" onclick="deleteIngredient('${item.id}')">Hapus</button>
+                        </div>
+                    </td>
+                </tr>
+            `;
+        }).join('');
+    }
+
+    function getRecipeRules() {
+        try {
+            const saved = JSON.parse(localStorage.getItem(STORAGE_RULE_KEY) || 'null');
+            return Array.isArray(saved) && saved.length ? saved : DEFAULT_RULES;
+        } catch (_) {
+            return DEFAULT_RULES;
+        }
+    }
+
+    function setRecipeRules(rules) {
+        localStorage.setItem(STORAGE_RULE_KEY, JSON.stringify(rules));
+    }
+
+    function saveRecipeRule() {
+        const keyword = document.getElementById('ruleKeyword').value.trim().toLowerCase();
+        const category = document.getElementById('ruleCategory').value;
+        const dishesRaw = document.getElementById('ruleDishes').value.trim();
+
+        if (!keyword || !dishesRaw) {
+            return showAlert('ruleMsg', 'Kata kunci bahan dan daftar olahan wajib diisi.', 'err');
+        }
+
+        const dishes = dishesRaw.split(',').map(s => s.trim()).filter(Boolean);
+        if (!dishes.length) {
+            return showAlert('ruleMsg', 'Minimal satu nama olahan.', 'err');
+        }
+
+        const rules = getRecipeRules();
+        const existingIdx = rules.findIndex(r => r.keyword.toLowerCase() === keyword);
+        if (existingIdx !== -1) {
+            rules[existingIdx] = { keyword, category, dishes };
+        } else {
+            rules.push({ keyword, category, dishes });
+        }
+
+        setRecipeRules(rules);
+        document.getElementById('ruleKeyword').value = '';
+        document.getElementById('ruleDishes').value = '';
+        renderRecipeSuggestions();
+        showAlert('ruleMsg', 'Aturan olahan disimpan.', 'ok');
+    }
+
+    function resetRecipeRulesToDefault() {
+        setRecipeRules(DEFAULT_RULES);
+        renderRecipeSuggestions();
+        showAlert('ruleMsg', 'Aturan dikembalikan ke bawaan.', 'ok');
+    }
+
+    function renderRecipeSuggestions() {
+        const grid = document.getElementById('recipeSuggestionsGrid');
+        if (!grid) return;
+
+        const activeIngredients = getIngredients().filter(i => Number(i.qty) > 0);
+        const rules = getRecipeRules();
+
+        if (!activeIngredients.length) {
+            grid.innerHTML = `<div class="sub">Stok bahan kosong. Isi stok bahan agar ide olahan muncul.</div>`;
+            return;
+        }
+
+        const suggestions = [];
+        activeIngredients.forEach(ing => {
+            const ingNameLower = String(ing.name || '').toLowerCase();
+            const matchedRules = rules.filter(r => ingNameLower.includes(String(r.keyword || '').toLowerCase()));
+            const estPortions = ing.perPortion > 0 ? Math.max(1, Math.floor(Number(ing.qty) / Number(ing.perPortion))) : 1;
+
+            matchedRules.forEach(rule => {
+                suggestions.push({
+                    ingredient: ing,
+                    category: rule.category || ing.category || 'Makanan',
+                    dishes: rule.dishes,
+                    portions: estPortions
+                });
+            });
+        });
+
+        if (!suggestions.length) {
+            grid.innerHTML = `<div class="sub">Belum ada aturan olahan yang cocok dengan bahan aktif.</div>`;
+            return;
+        }
+
+        grid.innerHTML = suggestions.map(s => {
+            const isDrink = s.category === 'Minuman';
+            return `
+                <div class="idea-card ${isDrink ? 'drink' : ''}">
+                    <div class="idea-head">
+                        <div>
+                            <div class="idea-bahan">${s.ingredient.name}</div>
+                            <div class="sub" style="font-size:11px;">Stok: ${s.ingredient.qty} ${s.ingredient.unit} (±${s.portions} porsi)</div>
+                        </div>
+                        <span class="cat-pill">${s.category}</span>
                     </div>
-                    <div class="price">${fmtRp(harga)}</div>
+                    <div style="display:flex; flex-direction:column; gap:6px;">
+                        ${s.dishes.map(dish => `
+                            <div class="dish-row">
+                                <button type="button" class="dish-chip ${isDrink ? 'drink-chip' : ''}"
+                                    title="Buat menu lauk (harga bebas)"
+                                    onclick="promoteDishToMenu('${escapeJs(dish)}', '${escapeJs(s.category)}', ${s.portions}, '${escapeJs(s.ingredient.name)}', false)">
+                                    + ${dish}
+                                </button>
+                                ${!isDrink ? `
+                                    <button type="button" class="nasi-mini-btn"
+                                        title="Buat menu lauk + Nasi (+Rp5.000)"
+                                        onclick="promoteDishToMenu('${escapeJs(dish)}', '${escapeJs(s.category)}', ${s.portions}, '${escapeJs(s.ingredient.name)}', true)">
+                                        + Nasi
+                                    </button>
+                                ` : ''}
+                            </div>
+                        `).join('')}
+                    </div>
                 </div>
-            </div>
+            `;
+        }).join('');
+    }
+
+    async function ensureRiceMenuExists() {
+        const existingRice = menusCache.find(m => String(m.name || '').toLowerCase() === 'nasi putih');
+        if (existingRice) return existingRice;
+
+        const categoryId = resolveCategoryId('Makanan');
+        const res = await fetch('/menus', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json',
+                'X-CSRF-TOKEN': CSRF_TOKEN
+            },
+            body: JSON.stringify({
+                category_id: categoryId,
+                name: 'Nasi Putih',
+                price: HARGA_NASI,
+                stock: 50,
+                description: 'Nasi putih hangat terpisah (+Rp5.000)'
+            })
+        });
+        const json = await res.json();
+        if (!res.ok) throw new Error(json.message || 'Gagal membuat menu Nasi Putih.');
+        return json.data || json;
+    }
+
+    async function addStandaloneRiceMenu() {
+        try {
+            const rice = await ensureRiceMenuExists();
+            await loadMenus();
+            switchSection('gambar');
+            if (rice?.id) {
+                document.getElementById('adminMenuSelect').value = rice.id;
+                syncAdminPreview();
+                renderAdminMenusGrid();
+            }
+            showAlert('gambarMsg', `Menu "Nasi Putih" (Rp${HARGA_NASI.toLocaleString('id-ID')}) siap diatur gambarnya.`, 'ok');
+        } catch (err) {
+            showAlert('ruleMsg', err.message || 'Gagal menambahkan Nasi Putih.', 'err');
+        }
+    }
+
+    async function promoteDishToMenu(dishName, categoryName, estimatedStock, ingredientName, withRice = false) {
+        const laukInput = prompt(
+            withRice
+                ? `Harga lauk "${dishName}" saja (Rp) — otomatis ditambah Nasi Rp${HARGA_NASI.toLocaleString('id-ID')}:`
+                : `Harga lauk "${dishName}" saja (Rp) — bebas sesuai keinginan:`,
+            categoryName === 'Minuman' ? '5000' : '7000'
+        );
+        if (laukInput === null) return;
+
+        const hargaLauk = Math.max(0, parseFloat(laukInput) || 0);
+        const finalPrice = withRice ? (hargaLauk + HARGA_NASI) : hargaLauk;
+        const finalName = withRice ? `${dishName} + Nasi` : dishName;
+        const descText = withRice
+            ? `Lauk Rp${hargaLauk.toLocaleString('id-ID')} + Nasi Rp${HARGA_NASI.toLocaleString('id-ID')} • Bahan: ${ingredientName}`
+            : `Lauk saja Rp${hargaLauk.toLocaleString('id-ID')} • Bahan: ${ingredientName}`;
+
+        const existing = menusCache.find(m => String(m.name || '').toLowerCase() === finalName.toLowerCase());
+        if (existing) {
+            switchSection('gambar');
+            document.getElementById('adminMenuSelect').value = existing.id;
+            syncAdminPreview();
+            renderAdminMenusGrid();
+            showAlert('gambarMsg', `"${existing.name}" sudah ada di menu. Silakan pilih gambar.`, 'ok');
+            return;
+        }
+
+        const stock = Math.max(1, parseInt(estimatedStock, 10) || 1);
+        const categoryId = resolveCategoryId(categoryName);
+
+        try {
+            if (withRice) {
+                await ensureRiceMenuExists();
+            }
+
+            const res = await fetch('/menus', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json',
+                    'X-CSRF-TOKEN': CSRF_TOKEN
+                },
+                body: JSON.stringify({
+                    category_id: categoryId,
+                    name: finalName,
+                    price: finalPrice,
+                    stock: stock,
+                    description: descText
+                })
+            });
+
+            const json = await res.json();
+            if (!res.ok) {
+                return showAlert('ruleMsg', json.message || 'Gagal menambahkan menu baru.', 'err');
+            }
+
+            const created = json.data || json;
+            await loadMenus();
+            switchSection('gambar');
+            if (created?.id) {
+                document.getElementById('adminMenuSelect').value = created.id;
+                syncAdminPreview();
+                renderAdminMenusGrid();
+            }
+            showAlert('gambarMsg', `Menu "${finalName}" (Rp${finalPrice.toLocaleString('id-ID')}) berhasil dibuat. Silakan unggah gambarnya.`, 'ok');
+        } catch (err) {
+            showAlert('ruleMsg', err.message || 'Terjadi kesalahan saat mengirim menu ke server.', 'err');
+        }
+    }
+
+    async function deleteMenu() {
+        const sel = document.getElementById('adminMenuSelect');
+        const menuId = sel?.value;
+        if (!menuId) {
+            return showAlert('gambarMsg', 'Pilih menu yang ingin dihapus terlebih dahulu.', 'err');
+        }
+
+        const menu = menusCache.find(m => String(m.id) === String(menuId));
+        const namaMenu = menu?.name || `ID #${menuId}`;
+        if (!confirm(`Hapus menu "${namaMenu}" beserta gambarnya?`)) {
+            return;
+        }
+
+        try {
+            const res = await fetch(`/menus/${menuId}`, {
+                method: 'DELETE',
+                headers: {
+                    'Accept': 'application/json',
+                    'X-CSRF-TOKEN': CSRF_TOKEN
+                }
+            });
+            const json = await res.json();
+            if (!res.ok) {
+                return showAlert('gambarMsg', json.message || 'Gagal menghapus menu.', 'err');
+            }
+            resetAdminImageForm();
+            await loadMenus();
+            showAlert('gambarMsg', `Menu "${namaMenu}" berhasil dihapus.`, 'ok');
+        } catch (err) {
+            showAlert('gambarMsg', 'Terjadi kesalahan saat menghapus menu.', 'err');
+        }
+    }
+
+    function renderAdminMenusGrid() {
+        const grid = document.getElementById('adminMenusGrid');
+        if (!grid) return;
+
+        if (!menusCache.length) {
+            grid.innerHTML = `<div class="sub">Menu kosong.</div>`;
+            return;
+        }
+
+        const selectedId = document.getElementById('adminMenuSelect')?.value;
+        grid.innerHTML = menusCache.map(m => {
+            const imgSrc = m.image ? `/storage/${m.image}` : 'https://placehold.co/300x180/ede3cf/153b2c?text=No+Image';
+            const isActive = String(m.id) === String(selectedId);
+            return `
+                <div class="menu-item ${isActive ? 'active' : ''}" onclick="selectMenuForImage(${m.id})">
+                    <img class="menu-thumb" src="${imgSrc}" alt="${m.name}" onerror="this.src='https://placehold.co/300x180/ede3cf/153b2c?text=No+Image'">
+                    <div class="menu-body">
+                        <div>
+                            <div style="font-weight:700; font-size:13.5px; color:var(--green-dark);">${m.name}</div>
+                            <div class="stock">Stok: ${m.stock ?? 0}</div>
+                            ${m.description ? `<div class="sub" style="font-size:11px; margin-top:2px;">${m.description}</div>` : ''}
+                        </div>
+                        <div style="display:flex; justify-content:space-between; align-items:center; gap:6px;">
+                            <span class="price">Rp${Number(m.price || 0).toLocaleString('id-ID')}</span>
+                            <span class="menu-tag">${m.category?.name || 'Menu'}</span>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }).join('');
+    }
+
+    function selectMenuForImage(id) {
+        const sel = document.getElementById('adminMenuSelect');
+        if (sel) {
+            sel.value = id;
+            syncAdminPreview();
+            renderAdminMenusGrid();
+        }
+    }
+
+    function syncAdminPreview() {
+        const sel = document.getElementById('adminMenuSelect');
+        const imgEl = document.getElementById('adminPreviewImg');
+        const labelEl = document.getElementById('adminPreviewLabel');
+        const subEl = document.getElementById('adminPreviewSub');
+        if (!sel || !imgEl) return;
+
+        const menu = menusCache.find(m => String(m.id) === String(sel.value));
+        if (!menu) {
+            imgEl.src = 'https://placehold.co/300x180/ede3cf/153b2c?text=Pilih+Menu';
+            labelEl.textContent = 'Preview';
+            subEl.textContent = '-';
+            return;
+        }
+
+        labelEl.textContent = menu.name;
+        subEl.textContent = `Rp${Number(menu.price || 0).toLocaleString('id-ID')} • Stok ${menu.stock ?? 0}`;
+
+        if (!selectedAdminFile) {
+            imgEl.src = menu.image ? `/storage/${menu.image}` : 'https://placehold.co/300x180/ede3cf/153b2c?text=No+Image';
+        }
+    }
+
+    function initDropzone() {
+        const dz = document.getElementById('adminDropzone');
+        if (!dz) return;
+        ['dragenter', 'dragover'].forEach(ev => {
+            dz.addEventListener(ev, e => { e.preventDefault(); dz.classList.add('dragover'); });
+        });
+        ['dragleave', 'drop'].forEach(ev => {
+            dz.addEventListener(ev, e => { e.preventDefault(); dz.classList.remove('dragover'); });
+        });
+        dz.addEventListener('drop', e => {
+            const file = e.dataTransfer?.files?.[0];
+            if (file) applySelectedImage(file);
+        });
+    }
+
+    function handleAdminImageChange(event) {
+        const file = event.target?.files?.[0];
+        if (file) applySelectedImage(file);
+    }
+
+    function applySelectedImage(file) {
+        selectedAdminFile = file;
+        document.getElementById('adminFileMeta').textContent = `${file.name} (${Math.round(file.size / 1024)} KB)`;
+        const reader = new FileReader();
+        reader.onload = e => {
+            document.getElementById('adminPreviewImg').src = e.target.result;
+        };
+        reader.readAsDataURL(file);
+    }
+
+    function resetAdminImageForm() {
+        selectedAdminFile = null;
+        const input = document.getElementById('adminImageInput');
+        if (input) input.value = '';
+        document.getElementById('adminFileMeta').textContent = 'Belum ada file dipilih';
+        syncAdminPreview();
+    }
+
+    async function uploadMenuImage() {
+        const menuId = document.getElementById('adminMenuSelect').value;
+        if (!menuId) return showAlert('gambarMsg', 'Pilih menu terlebih dahulu.', 'err');
+        if (!selectedAdminFile) return showAlert('gambarMsg', 'Pilih file gambar terlebih dahulu.', 'err');
+
+        const formData = new FormData();
+        formData.append('image', selectedAdminFile);
+
+        try {
+            const res = await fetch(`/menus/${menuId}`, {
+                method: 'POST',
+                headers: {
+                    'Accept': 'application/json',
+                    'X-CSRF-TOKEN': CSRF_TOKEN
+                },
+                body: formData
+            });
+            const json = await res.json();
+            if (!res.ok) {
+                return showAlert('gambarMsg', json.message || 'Gagal mengunggah gambar.', 'err');
+            }
+            resetAdminImageForm();
+            await loadMenus();
+            showAlert('gambarMsg', 'Gambar menu berhasil disimpan.', 'ok');
+        } catch (err) {
+            showAlert('gambarMsg', 'Terjadi kesalahan saat mengunggah gambar.', 'err');
+        }
+    }
+
+    async function refreshTransactionsView() {
+        try {
+            const res = await fetch('/transactions', { headers: { 'Accept': 'application/json' } });
+            if (!res.ok) return;
+            const json = await res.json();
+            transactionsCache = Array.isArray(json) ? json : (json.data || []);
+            renderTransactionsHistory();
+        } catch (_) {}
+    }
+
+    function renderTransactionsHistory() {
+        const q = (document.getElementById('searchTrxInput')?.value || '').toLowerCase().trim();
+        const tbody = document.getElementById('trxHistoryBody');
+        if (!tbody) return;
+
+        const filtered = transactionsCache.filter(t => {
+            if (!q) return true;
+            return String(t.id || '').toLowerCase().includes(q) ||
+                String(t.customer_name || '').toLowerCase().includes(q) ||
+                String(t.menu?.name || '').toLowerCase().includes(q);
+        });
+
+        const totalOmzet = filtered.reduce((acc, t) => acc + Number(t.total_price || t.total || 0), 0);
+        document.getElementById('kpiTrxCount').textContent = filtered.length;
+        document.getElementById('kpiOmzet').textContent = `Rp${totalOmzet.toLocaleString('id-ID')}`;
+
+        if (!filtered.length) {
+            tbody.innerHTML = `<tr><td colspan="7" class="sub">Belum ada transaksi.</td></tr>`;
+            return;
+        }
+
+        tbody.innerHTML = filtered.map(t => `
+            <tr>
+                <td>#${t.id}</td>
+                <td>${t.customer_name || '-'}</td>
+                <td>${t.created_at || '-'}</td>
+                <td>${t.menu?.name || '-'}</td>
+                <td>${t.quantity ?? 1}</td>
+                <td>Rp${Number(t.total_price || t.total || 0).toLocaleString('id-ID')}</td>
+                <td><button type="button" class="btn-soft btn-sm" onclick="openStruk(${t.id})">Struk</button></td>
+            </tr>
+        `).join('');
+    }
+
+    function openStruk(id) {
+        const trx = transactionsCache.find(t => String(t.id) === String(id));
+        if (!trx) return;
+        const total = Number(trx.total_price || trx.total || 0);
+        document.getElementById('strukContent').innerHTML = `
+            <div class="struk-line"><span>ID Transaksi</span><strong>#${trx.id}</strong></div>
+            <div class="struk-line"><span>Pelanggan</span><span>${trx.customer_name || '-'}</span></div>
+            <div class="struk-line"><span>Menu</span><span>${trx.menu?.name || '-'}</span></div>
+            <div class="struk-line"><span>Jumlah</span><span>${trx.quantity ?? 1}</span></div>
+            <div class="struk-total"><span>Total</span><span>Rp${total.toLocaleString('id-ID')}</span></div>
         `;
-    }).join('');
+        document.getElementById('sec-struk').style.display = 'block';
+        window.print();
+    }
 
-    menusCache.forEach(m => {
-        const nama = getMenuDisplayName(m);
-        if (bahanMenuSelect) {
-            const opt1 = document.createElement('option');
-            opt1.value = m.id; opt1.textContent = nama;
-            bahanMenuSelect.appendChild(opt1);
+    async function logoutUser() {
+        try {
+            await fetch('/logout', {
+                method: 'POST',
+                headers: { 'Accept': 'application/json', 'X-CSRF-TOKEN': CSRF_TOKEN }
+            });
+        } finally {
+            window.location.href = '/admin/login';
         }
-        if (filterMenuBahan) {
-            const opt2 = document.createElement('option');
-            opt2.value = m.id; opt2.textContent = nama;
-            filterMenuBahan.appendChild(opt2);
-        }
-        if (adminSelectEl) {
-            const adminOpt = document.createElement('option');
-            adminOpt.value = m.id; adminOpt.textContent = `#${m.id} - ${nama}`;
-            adminSelectEl.appendChild(adminOpt);
-        }
-    });
-
-    if (bahanMenuSelect && prevBahanMenu) bahanMenuSelect.value = prevBahanMenu;
-    if (filterMenuBahan && prevFilterMenu) filterMenuBahan.value = prevFilterMenu;
-    if (adminSelectEl && prevAdminVal) adminSelectEl.value = prevAdminVal;
-
-    syncAdminPreview();
-    renderIngredients();
-}
-
-function selectMenu(id) {
-    const bahanMenuSelect = document.getElementById('bahanMenuSelect');
-    if (bahanMenuSelect) bahanMenuSelect.value = id;
-    const adminSelectEl = document.getElementById('adminMenuSelect');
-    if (adminSelectEl) {
-        adminSelectEl.value = id;
-        syncAdminPreview();
-    }
-    document.querySelectorAll('.menu-item').forEach(el => el.classList.remove('active'));
-    document.getElementById('card-' + id)?.classList.add('active');
-}
-
-function handleAdminFileChange() {
-    const fileInput = document.getElementById('adminImageInput');
-    const metaEl = document.getElementById('adminFileMeta');
-    const file = fileInput.files?.[0];
-
-    if (tempPreviewUrl) {
-        URL.revokeObjectURL(tempPreviewUrl);
-        tempPreviewUrl = null;
     }
 
-    if (!file) {
-        metaEl.textContent = 'Belum ada file dipilih';
-        syncAdminPreview();
-        return;
+    function showAlert(elId, msg, type) {
+        const el = document.getElementById(elId);
+        if (!el) return;
+        el.textContent = msg;
+        el.className = `alert ${type}`;
     }
 
-    metaEl.textContent = `${file.name} (${(file.size / 1024).toFixed(1)} KB)`;
-    tempPreviewUrl = URL.createObjectURL(file);
-    syncAdminPreview(true);
-}
-
-function clearAdminFile() {
-    document.getElementById('adminImageInput').value = '';
-    handleAdminFileChange();
-}
-
-function syncAdminPreview(isNewFile = false) {
-    const adminSelectEl = document.getElementById('adminMenuSelect');
-    const previewImg = document.getElementById('adminPreviewImg');
-    const previewLabel = document.getElementById('adminPreviewLabel');
-    const previewSub = document.getElementById('adminPreviewSub');
-
-    if (!adminSelectEl || !previewImg) return;
-    const menu = menusCache.find(item => String(item.id) === String(adminSelectEl.value));
-    const menuName = menu ? getMenuDisplayName(menu) : 'Menu';
-
-    if (isNewFile && tempPreviewUrl) {
-        previewImg.src = tempPreviewUrl;
-        previewLabel.textContent = `Preview Baru — ${menuName}`;
-        previewSub.textContent = 'Siap diunggah ke server.';
-        return;
+    function escapeJs(str) {
+        return String(str || '').replace(/\\/g, '\\\\').replace(/'/g, "\\'");
     }
-
-    previewImg.src = menu ? getMenuImage(menu) : '';
-    previewLabel.textContent = `Gambar Saat Ini — ${menuName}`;
-    previewSub.textContent = menu?.image ? `Path: /storage/${menu.image}` : 'Belum ada foto tersimpan (pakai placeholder).';
-}
-
-const dropzone = document.getElementById('adminDropzone');
-if (dropzone) {
-    ['dragenter', 'dragover'].forEach(evt => {
-        dropzone.addEventListener(evt, (e) => { e.preventDefault(); e.stopPropagation(); dropzone.classList.add('dragover'); });
-    });
-    ['dragleave', 'drop'].forEach(evt => {
-        dropzone.addEventListener(evt, (e) => { e.preventDefault(); e.stopPropagation(); dropzone.classList.remove('dragover'); });
-    });
-    dropzone.addEventListener('drop', (e) => {
-        const files = e.dataTransfer?.files;
-        if (files && files.length) {
-            document.getElementById('adminImageInput').files = files;
-            handleAdminFileChange();
-        }
-    });
-}
-
-async function uploadMenuImage() {
-    const menuId = document.getElementById('adminMenuSelect').value;
-    const fileInput = document.getElementById('adminImageInput');
-    if (!fileInput.files.length) return showAlert('adminMsg', 'err', 'Pilih atau drop file gambar dulu.');
-
-    const formData = new FormData();
-    formData.append('image', fileInput.files[0]);
-
-    const res = await fetch(`/menus/${menuId}`, {
-        method: 'POST',
-        headers: { 'Accept': 'application/json', 'X-CSRF-TOKEN': csrfToken },
-        body: formData
-    });
-
-    const data = await res.json();
-    if (res.ok && data.success) {
-        showAlert('adminMsg', 'ok', data.message || 'Gambar menu berhasil diunggah');
-        clearAdminFile();
-        await loadMenus();
-    } else {
-        showAlert('adminMsg', 'err', formatErrorMessage(res, data, 'Gagal upload gambar'));
-    }
-}
-
-loadRecipeRules();
-loadLocalIngredients();
-loadLocalTransactions();
-updateEstimatedPortions();
-checkMe().then((ok) => {
-    if (!ok) return;
-    loadMenus();
-    refreshTransactionsView();
-});
 </script>
 </body>
 </html>
